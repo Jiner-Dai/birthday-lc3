@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生日快乐快乐🎂</title>
+    <title>生日快乐 🎂</title>
     <style>
         * {
             margin: 0;
@@ -147,6 +147,8 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.4);
             transition: all 0.3s ease;
             animation: float 3s ease-in-out infinite;
+            z-index: 10;
+            position: relative;
         }
 
         .start-btn:hover {
@@ -361,7 +363,7 @@
 <body>
     <!-- Birthday Cake Screen -->
     <div class="cake-container" id="cakeScreen">
-        <h1>🎉 生日快乐快乐！🎉</h1>
+        <h1>🎉 生日快乐！🎉</h1>
         <p style="font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.95;">
             又是一年！还是一份电子礼物，不过在几个月前就开始想，该送什么。想来想去，好像也没有什么真正合适的。后来忽然觉得，也许可以分享一些记忆。这个过程有点奇怪，那些记忆像是被慢慢藏了起来，可一旦去挖，又会涌出来很多。让我挑着分享一些吧。
         </p>
@@ -373,7 +375,7 @@
                 <div class="flame" id="flame"></div>
             </div>
         </div>
-        <p class="instruction">💨 请先许个愿，点击这个蛋糕把蜡烛吹灭吧（抽象的仪式感hhh）</p>
+        <p class="instruction">💨 请先许个愿，点击蛋糕把蜡烛吹灭（抽象的仪式感hhh）</p>
         <button class="start-btn" id="startBtn">🎁 打开这封信</button>
     </div>
 
@@ -522,10 +524,13 @@
         // Set background music volume
         bgMusic.volume = 0.4;
 
-        // Start button click - play music and hide button
+        // Start button click - play music, hide button, show cake instruction
         startBtn.addEventListener('click', () => {
-            bgMusic.play();
-            startBtn.style.display = 'none';
+            bgMusic.play().catch(err => console.log('Audio play failed:', err));
+            startBtn.style.opacity = '0';
+            setTimeout(() => {
+                startBtn.style.display = 'none';
+            }, 300);
             musicPlayer.classList.add('show');
         });
 
