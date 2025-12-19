@@ -25,26 +25,32 @@
         .music-player {
             position: fixed;
             bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            right: 20px;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 20px;
-            border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
-        }
-
-        .music-player audio {
-            outline: none;
-        }
-
-        .music-info {
-            text-align: center;
-            color: #667eea;
             font-size: 0.9em;
-            margin-bottom: 8px;
-            font-weight: 500;
+            color: #667eea;
+            display: none;
+        }
+
+        .music-player.show {
+            display: block;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .cake-container {
@@ -126,6 +132,31 @@
             font-size: 1.3em;
             margin-top: 20px;
             opacity: 0.9;
+        }
+
+        .start-btn {
+            margin-top: 30px;
+            padding: 18px 45px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .hidden {
@@ -343,6 +374,7 @@
             </div>
         </div>
         <p class="instruction">💨 点击蛋糕许愿并吹灭蜡烛</p>
+        <button class="start-btn" id="startBtn">🎁 打开这封信</button>
     </div>
 
     <!-- Main Content -->
@@ -352,8 +384,7 @@
             <p style="margin-bottom: 20px;">选择一个关键词来探索回忆，或点击任意卡片</p>
             
             <div class="filter-container">
-                <button class="filter-btn active" data-filter="all">全部回忆</button>
-                <button class="filter-btn" data-filter="school">校园碎片</button>
+                <button class="filter-btn active" data-filter="school">校园碎片</button>
                 <button class="filter-btn" data-filter="music">歌曲记忆</button>
                 <button class="filter-btn" data-filter="thoughts">碎碎念</button>
                 <button class="filter-btn" data-filter="journey">旅行记忆</button>
@@ -370,11 +401,12 @@
     <!-- Background Music Player -->
     <div class="music-player">
         <div class="music-info">🎵 Letter - S.H.E (Live)</div>
-        <audio controls loop preload="auto">
-            <source src="music/Letter.mp3" type="audio/mpeg">
+        <audio controls loop>
+            <source src="https://m804.music.126.net/20251220055311/e9d15d4b147ac5bc68c493027c53c9d7/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/58726544713/9c29/dc3c/ecca/48159434624b3a8068d2e12bc937c800.m4a" type="audio/mp4">
+            Your browser does not support the audio element.
         </audio>
     </div>
-    
+
     <script>
         const memories = [
             {
@@ -483,6 +515,19 @@
         const flame = document.getElementById('flame');
         const cakeScreen = document.getElementById('cakeScreen');
         const mainContent = document.getElementById('mainContent');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicPlayer = document.getElementById('musicPlayer');
+        const startBtn = document.getElementById('startBtn');
+
+        // Set background music volume
+        bgMusic.volume = 0.4;
+
+        // Start button click - play music and hide button
+        startBtn.addEventListener('click', () => {
+            bgMusic.play();
+            startBtn.style.display = 'none';
+            musicPlayer.classList.add('show');
+        });
 
         cake.addEventListener('click', () => {
             // Play birthday song
@@ -502,13 +547,11 @@
         });
 
         // Generate cards
-        function generateCards(filter = 'all') {
+        function generateCards(filter = 'school') {
             const container = document.getElementById('cardsContainer');
             container.innerHTML = '';
             
-            const filteredMemories = filter === 'all' 
-                ? memories 
-                : memories.filter(m => m.category === filter);
+            const filteredMemories = memories.filter(m => m.category === filter);
             
             filteredMemories.forEach((memory, index) => {
                 const card = document.createElement('div');
