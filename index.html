@@ -513,17 +513,16 @@
         ];
 
        // Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    let candleAudio = null; // 生日蜡烛音效
-    const cake = document.getElementById('cake');
-    const flame = document.getElementById('flame');
-    const cakeScreen = document.getElementById('cakeScreen');
-    const mainContent = document.getElementById('mainContent');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicPlayer = document.getElementById('musicPlayer');
-    const startBtn = document.getElementById('startBtn');
-    const instruction = document.querySelector('.instruction');
-
+            document.addEventListener('DOMContentLoaded', function() {
+                let candleAudio = null; // 生日蜡烛音效
+                const cake = document.getElementById('cake');
+                const flame = document.getElementById('flame');
+                const cakeScreen = document.getElementById('cakeScreen');
+                const mainContent = document.getElementById('mainContent');
+                const bgMusic = document.getElementById('bgMusic');
+                const musicPlayer = document.getElementById('musicPlayer');
+                const startBtn = document.getElementById('startBtn');
+                const instruction = document.querySelector('.instruction');
     // 一开始隐藏蛋糕和说明文字
     cake.style.display = 'none';
     instruction.style.display = 'none';
