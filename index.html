@@ -1,617 +1,219 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生日快乐 🎂</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-        }
-
-        /* Background music player */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 25px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-            font-size: 0.9em;
-            color: #667eea;
-            display: none;
-        }
-
-        .music-player.show {
-            display: block;
-            animation: slideInRight 0.5s ease-out;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .cake-container {
-            text-align: center;
-            color: white;
-            animation: fadeIn 1s ease-in;
-        }
-
-        .cake-container h1 {
-            font-size: 3em;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .cake {
-            width: 250px;
-            height: 300px;
-            margin: 0 auto 30px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cake-layer {
-            width: 200px;
-            height: 60px;
-            background: linear-gradient(to bottom, #ff9a9e 0%, #fad0c4 100%);
-            border-radius: 10px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .layer1 { bottom: 0; }
-        .layer2 { bottom: 60px; width: 180px; }
-        .layer3 { bottom: 120px; width: 160px; }
-
-        .candle {
-            width: 10px;
-            height: 40px;
-            background: #fff;
-            position: absolute;
-            bottom: 180px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 5px 5px 0 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .flame {
-            width: 20px;
-            height: 30px;
-            background: radial-gradient(circle, #ffeb3b 0%, #ff9800 50%, transparent 70%);
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            animation: flicker 0.3s infinite alternate;
-        }
-
-        .flame.blown {
-            animation: blowOut 0.5s forwards;
-        }
-
-        @keyframes flicker {
-            0% { transform: translateX(-50%) scale(1); }
-            100% { transform: translateX(-50%) scale(1.1); }
-        }
-
-        @keyframes blowOut {
-            to { 
-                opacity: 0;
-                transform: translateX(-50%) translateY(-30px) scale(0.5);
-            }
-        }
-
-        .instruction {
-            font-size: 1.3em;
-            margin-top: 20px;
-            opacity: 0.9;
-        }
-
-        .start-btn {
-            margin-top: 30px;
-            padding: 18px 45px;
-            background: white;
-            color: #667eea;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.3em;
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-            animation: float 3s ease-in-out infinite;
-            z-index: 10;
-            position: relative;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .main-content {
-            padding: 40px 20px;
-            width: 100%;
-            max-width: 1400px;
-            animation: slideIn 0.8s ease-out;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .filter-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .filter-btn {
-            padding: 12px 25px;
-            background: white;
-            color: #667eea;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .filter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            perspective: 1000px;
-            min-height: 400px;
-            cursor: pointer;
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            min-height: 400px;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .card-front {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card-back {
-            background: white;
-            transform: rotateY(180deg);
-            overflow-y: auto;
-        }
-
-        .card-icon {
-            font-size: 4em;
-            margin-bottom: 15px;
-        }
-
-        .card-front h3 {
-            font-size: 2em;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .card-back h4 {
-            color: #667eea;
-            font-size: 1.6em;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .card-back p {
-            color: #333;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .card-back .date {
-            margin-top: 20px;
-            font-style: italic;
-            color: #888;
-            font-size: 0.9em;
-            text-align: center;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .random-btn {
-            padding: 15px 35px;
-            background: white;
-            color: #667eea;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            margin: 0 auto;
-            display: block;
-        }
-
-        .random-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(0,0,0,0.4);
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .filter-container {
-                gap: 10px;
-            }
-            
-            .filter-btn {
-                padding: 10px 20px;
-                font-size: 0.9em;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生日快乐 🎂</title>
+<style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        overflow-x:hidden;
+    }
+    .cake-container {text-align:center; color:white; animation:fadeIn 1s ease-in;}
+    .cake-container h1 {font-size:3em; margin-bottom:30px; text-shadow:2px 2px 4px rgba(0,0,0,0.3);}
+    .cake {width:250px; height:300px; margin:0 auto 30px; position:relative; cursor:pointer;}
+    .cake-layer {
+        width:200px; height:60px; background:linear-gradient(to bottom,#ff9a9e 0%,#fad0c4 100%);
+        border-radius:10px; position:absolute; left:50%; transform:translateX(-50%);
+        box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    }
+    .layer1 {bottom:0;}
+    .layer2 {bottom:60px; width:180px;}
+    .layer3 {bottom:120px; width:160px;}
+    .candle {
+        width:10px; height:40px; background:#fff; position:absolute; bottom:180px;
+        left:50%; transform:translateX(-50%); border-radius:5px 5px 0 0;
+        box-shadow:0 2px 5px rgba(0,0,0,0.2);
+    }
+    .flame {
+        width:20px; height:30px; background:radial-gradient(circle,#ffeb3b 0%,#ff9800 50%,transparent 70%);
+        position:absolute; top:-25px; left:50%; transform:translateX(-50%);
+        border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+        animation:flicker 0.3s infinite alternate;
+    }
+    .flame.blown {animation: blowOut 0.5s forwards;}
+    @keyframes flicker {0%{transform:translateX(-50%) scale(1);}100%{transform:translateX(-50%) scale(1.1);}}
+    @keyframes blowOut {to{opacity:0; transform:translateX(-50%) translateY(-30px) scale(0.5);}}
+    .instruction {font-size:1.3em; margin-top:20px; opacity:0.9;}
+    .start-btn {
+        margin-top:30px; padding:18px 45px; background:white; color:#667eea;
+        border:none; border-radius:50px; cursor:pointer; font-size:1.3em; font-weight:bold;
+        box-shadow:0 5px 20px rgba(0,0,0,0.4); transition:all 0.3s ease;
+        animation:float 3s ease-in-out infinite; position:relative; z-index:10;
+    }
+    .start-btn:hover {transform:translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.5);}
+    @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .hidden {display:none;}
+    .main-content {padding:40px 20px; width:100%; max-width:1400px; animation:slideIn 0.8s ease-out;}
+    .header {text-align:center; color:white; margin-bottom:40px;}
+    .header h1 {font-size:3em; margin-bottom:15px; text-shadow:2px 2px 4px rgba(0,0,0,0.3);}
+    .cards-container {display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:30px; margin-bottom:30px;}
+    .card {perspective:1000px; min-height:400px; cursor:pointer;}
+    .card-inner {position:relative; width:100%; height:100%; transition:transform 0.6s; transform-style:preserve-3d;}
+    .card.flipped .card-inner {transform:rotateY(180deg);}
+    .card-front, .card-back {
+        position:absolute; width:100%; min-height:400px; backface-visibility:hidden;
+        border-radius:15px; padding:30px; box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+    .card-front {background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center;}
+    .card-back {background:white; transform:rotateY(180deg); overflow-y:auto;}
+    .card-icon {font-size:4em; margin-bottom:15px;}
+    .card-front h3 {font-size:2em; text-align:center; text-shadow:1px 1px 2px rgba(0,0,0,0.2);}
+    .card-back h4 {color:#667eea; font-size:1.6em; margin-bottom:20px; text-align:center;}
+    .card-back p {color:#333; line-height:1.8; margin-bottom:15px; text-align:left;}
+    .card-back .date {margin-top:20px; font-style:italic; color:#888; font-size:0.9em; text-align:center;}
+    .music-player {
+        position:fixed; bottom:20px; right:20px; z-index:1000;
+        background:rgba(255,255,255,0.9); padding:10px 15px; border-radius:25px;
+        box-shadow:0 3px 15px rgba(0,0,0,0.2); backdrop-filter:blur(10px);
+        font-size:0.9em; color:#667eea; display:none;
+    }
+    .music-player.show {display:block; animation:slideInRight 0.5s ease-out;}
+    @keyframes fadeIn {from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);}}
+    @keyframes slideIn {from{opacity:0; transform:translateX(-50px);} to{opacity:1; transform:translateX(0);}}
+    @keyframes slideInRight {from{opacity:0; transform:translateX(100px);} to{opacity:1; transform:translateX(0);}}
+    .filter-container {display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-bottom:40px;}
+    .filter-btn {padding:12px 25px; background:white; color:#667eea; border:none; border-radius:25px; cursor:pointer; font-size:1em; font-weight:bold; transition:all 0.3s ease; box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+    .filter-btn:hover {transform:translateY(-2px); box-shadow:0 6px 15px rgba(0,0,0,0.3);}
+    .filter-btn.active {background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%); color:white;}
+    .random-btn {padding:15px 35px; background:white; color:#667eea; border:none; border-radius:50px; cursor:pointer; font-size:1.1em; font-weight:bold; box-shadow:0 5px 15px rgba(0,0,0,0.3); transition:all 0.3s ease; margin:0 auto; display:block;}
+    .random-btn:hover {transform:translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4);}
+    @media(max-width:768px){.header h1{font-size:2em;} .cards-container{grid-template-columns:1fr;} .filter-container{gap:10px;} .filter-btn{padding:10px 20px; font-size:0.9em;}}
+</style>
 </head>
 <body>
-    <!-- Birthday Cake Screen -->
-    <div class="cake-container" id="cakeScreen">
-        <h1>🎉 生日快乐！🎉</h1>
-        <p style="font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.95;">
-            又是一年！还是一份电子礼物，不过在几个月前就开始想，该送什么。想来想去，好像也没有什么真正合适的。后来忽然觉得，也许可以分享一些记忆。这个过程有点奇怪，那些记忆像是被慢慢藏了起来，可一旦去挖，又会涌出来很多。让我挑着分享一些吧。
-        </p>
-        <div class="cake" id="cake">
-            <div class="cake-layer layer3"></div>
-            <div class="cake-layer layer2"></div>
-            <div class="cake-layer layer1"></div>
-            <div class="candle">
-                <div class="flame" id="flame"></div>
-            </div>
+
+<!-- Birthday Cake Screen -->
+<div class="cake-container" id="cakeScreen">
+    <h1>🎉 生日快乐！🎉</h1>
+    <p style="font-size:1.1em; margin-bottom:20px; line-height:1.6; max-width:600px; margin-left:auto; margin-right:auto; opacity:0.95;">
+        又是一年！还是一份电子礼物，不过在几个月前就开始想，该送什么。后来觉得，也许可以分享一些回忆。
+    </p>
+    <div class="cake" id="cake">
+        <div class="cake-layer layer3"></div>
+        <div class="cake-layer layer2"></div>
+        <div class="cake-layer layer1"></div>
+        <div class="candle">
+            <div class="flame" id="flame"></div>
         </div>
-        <p class="instruction">💨 请先许个愿，点击蛋糕把蜡烛吹灭（抽象的仪式感hhh）</p>
-        <button class="start-btn" id="startBtn">🎁 打开这封信</button>
     </div>
+    <p class="instruction">💨 请先许个愿，点击蛋糕把蜡烛吹灭</p>
+    <button class="start-btn" id="startBtn">🎁 打开这封信</button>
+</div>
 
-    <!-- Main Content -->
-    <div class="main-content hidden" id="mainContent">
-        <div class="header">
-            <h1>✨ 我们的回忆 ✨</h1>
-            <p style="margin-bottom: 20px;">选择一个关键词来探索回忆，或点击任意卡片</p>
-            
-            <div class="filter-container">
-                <button class="filter-btn active" data-filter="school">校园碎片</button>
-                <button class="filter-btn" data-filter="music">歌曲记忆</button>
-                <button class="filter-btn" data-filter="thoughts">碎碎念</button>
-                <button class="filter-btn" data-filter="journey">旅行记忆</button>
-            </div>
+<!-- Main Content -->
+<div class="main-content hidden" id="mainContent">
+    <div class="header">
+        <h1>✨ 我们的回忆 ✨</h1>
+        <p style="margin-bottom:20px;">选择一个关键词来探索回忆，或点击任意卡片</p>
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="school">校园碎片</button>
+            <button class="filter-btn" data-filter="music">歌曲记忆</button>
+            <button class="filter-btn" data-filter="thoughts">碎碎念</button>
+            <button class="filter-btn" data-filter="journey">旅行记忆</button>
         </div>
-
-        <div class="cards-container" id="cardsContainer">
-            <!-- Cards will be generated by JavaScript -->
-        </div>
-
-        <button class="random-btn" onclick="revealRandomCard()">🎲 随机翻开一张回忆</button>
     </div>
+    <div class="cards-container" id="cardsContainer"></div>
+    <button class="random-btn" onclick="revealRandomCard()">🎲 随机翻开一张回忆</button>
+</div>
 
-    <!-- Background Music Player -->
-    <div class="music-player">
-        <div class="music-info">🎵 Letter - S.H.E (Live)</div>
-        <audio controls loop>
-            <source src="https://m804.music.126.net/20251220055311/e9d15d4b147ac5bc68c493027c53c9d7/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/58726544713/9c29/dc3c/ecca/48159434624b3a8068d2e12bc937c800.m4a" type="audio/mp4">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
+<!-- Background Music Player -->
+<div class="music-player" id="musicPlayer">
+    <div class="music-info">🎵 Letter - S.H.E (Live)</div>
+    <audio id="bgMusic" loop>
+        <source src="music/Letter.mp3" type="audio/mpeg">
+    </audio>
+</div>
 
-    <script>
-        const memories = [
-            {
-                category: 'school',
-                icon: '🎒',
-                title: '开启高中',
-                content: '刚去高中的时候对我的冲击还是很大的，很多事情好像大家都理所应当的知道和理解，我是很抓瞎。军训的时候看开学第一课睡着了，后面还感觉很抱歉。升旗时听校歌感觉有点想哭，欢快的旋律中却是自己在一个蛮不安的环境。适应宿舍生活时，小杜说认识到了你，像是老朋友一样。你到我们宿舍后，我还在想这样是不是更难融入。有段时间会跟着你们后面听你们讲话，似懂非懂。最开始感觉你和别人不太一样，每次都愿意耐心地给我解释。我也感觉很放松。',
-                date: '高一'
-            },
-            {
-                category: 'school',
-                icon: '🧹',
-                title: '打扫卫生',
-                content: '有一次班级大扫除，要清理的很彻底。擦窗户和窗台时，窗台上有很多陈年老灰。蜷缩着身子很难用上力，但你有在帮助我。有你一起做现在回想起来好像都是积极的回忆。后面用教室屏幕放了《最佳损友》，地面还是湿漉漉的，我们终于干完活了，肆无忌惮地瘫在椅子上听。那是我第一次认真听这首歌，在想着我和你以后还能这样吗？又觉得我们应该能成为很久很久的朋友。',
-                date: '高中时光'
-            },
-            {
-                category: 'school',
-                icon: '💙',
-                title: '星期天',
-                content: '周末返校的时候，我进国际部的门都要先看看你的蓝色箱子有没有在，如果有的话感觉会更加开心。周末没有见面好像就好久了。有时候我进教室，发现在趴着睡觉，看起来有些疲惫。你经常说坐车有点没睡醒或者晕乎。有时候会在充电柜旁坐着聊天，那里更隐蔽一些，可以从人群中消失，慢慢走进对方的世界。',
-                date: '每个周末'
-            },
-            {
-                category: 'school',
-                icon: '📝',
-                title: '晚自习',
-                content: '晚自习课间想找你无聊地干事，开一些奇怪的玩笑，在黑板或试卷上乱写乱画。我记得有张照片是你把连花清瘟胶囊的药片盒子贴到了我的鞋上。疫情的体温表你也会帮我写，我讨厌写那么多字会很歪歪扭扭，但你说你正好享受，写得还很好看。再后来的大学，我好像没有再遇到会喜欢在纸上写啊写啊的人。',
-                date: '晚自习时光'
-            },
-            {
-                category: 'school',
-                icon: '🌳',
-                title: '校园漫步',
-                content: '饭后溜达，看叶子天空和阳光。有时候还可以那样子推一推你。从灌木林里可以眺望到"外面的世界"，有很多大货车轰轰声。现在还留下来的那张照片，是被撞见了，我俩在亭子下笑。食堂里一起吃饭，两个蓝色的板凳挨在一起。吃饭前经常会有种很饿的感觉，吃起来格外满足。阳光充足的时候，还会把校服脱下来一起举着遮阳。',
-                date: '校园日常'
-            },
-            {
-                category: 'school',
-                icon: '⚽',
-                title: '操场',
-                content: '有时候也会走到操场，你给我讲过你那位手又细又长又白的同桌。那是第一次我听说人的手还有"好不好看"这一说。好多回忆是在操场上聊天的我们。第一次聊比较深刻的话题也是在那边盘着腿聊。我从当时就特别想听你更多的讲自己，你是个很好的倾听者，但也需要被听见吧。每一次被允许走进你，我都真的很开心。',
-                date: '操场时光'
-            },
-            {
-                category: 'journey',
-                icon: '✈️',
-                title: '云南之旅',
-                content: '学校外的美好回忆在云南，好像一群人一起旅行和两个人一起也没啥区别，就像是在人群里的俩人。在大巴上、酒店里、吃饭的地方，都带着鸭舌帽，穿着长羽绒服。有人说我俩像是姐妹或双胞胎。云南里的这俩人好像有了好多默契，无疑是慢慢总进的过程。',
-                date: '云南'
-            },
-            {
-                category: 'journey',
-                icon: '🎭',
-                title: '北京之行',
-                content: '后面就有了北京，一起去听相声和看剧的印象格外深。看完相声的那晚，我们走在北京夜里的街道，聊着后面的事情，在酒店又聊了很久。是有些悲伤的话题，又是靠近彼此的当下。现在回忆对那晚的记忆变淡了很多，我没有记录日记。更多的是一种感觉，一种想珍藏的感受，也是可能很难再回去的感受。',
-                date: '北京'
-            },
-            {
-                category: 'music',
-                icon: '🌸',
-                title: '无条件',
-                content: '我从很久之前都有听的《无条件》，这么讲还是很奇怪，但是我会想更多无条件地去给予自己想去给予的东西。你可以放肆地按照你的方式活着，但同时安心地、心安理得地知道彼此的存在。感觉更可能是有些东西想自然而然地无条件地放射出来。',
-                date: '一直以来'
-            },
-            {
-                category: 'thoughts',
-                icon: '💭',
-                title: '困惑',
-                content: '到现在好多事情好像还是没什么头绪，好多想法还是乱七八糟。我确实没有这么发自内心的想很好地对待另一个人，这样为另一人而开心和难过，这样渴望去更多地了解她。我好像自己也很难去定义这是怎么样的情感。有些东西可能不需要定义，更需要敏感地感知到自己的想法，在对方舒服的前提下去做。',
-                date: '内心独白'
-            },
-            {
-                category: 'thoughts',
-                icon: '🌅',
-                title: '分别',
-                content: '快要分别的时候，是我刚刚走进你一点的时候。当时觉得时间有时候还是好残忍，想让它放慢的时候它却停不下来。我很舍不得你，高一的时候怎么会想到能遇到这样的你让我有这么深的链接。我说我要珍惜，要尽力保护。要一直记得多迈出一步，要主动一点。别不好意思，别怕自作多情。',
-                date: '3.29'
-            },
-            {
-                category: 'thoughts',
-                icon: '📱',
-                title: '屏幕两端',
-                content: '视频还有发消息的时候有时候也在想，你是怎么想的。我人在这里（指屏幕对岸）是让你开心一点还是不开心一点？你能不能感受到我的关心和在乎？如果我用我的方式想去更好地接住你的开心和不开心，激动和冷漠...最后没有什么"用"，那我好像还是要这么做，如果在没有伤害到对方的前提下。',
-                date: '现在'
-            },
-            {
-                category: 'thoughts',
-                icon: '🌟',
-                title: '梦',
-                content: '就像前一阵做的梦一样，如果高中阶段没有你的话，我很难想象会是怎么样。那个阶段的美好，很大的原因是因为有你在。你让我愿意主动一些地去打开自己，也想要去走进你，去支持你。在此之前我可能没有想到人和人还可以这样子交流，更没有想到我会愿意或者说有能力这样。这样的关系有你我觉得就很幸运。',
-                date: '永远'
-            },
-            {
-                category: 'thoughts',
-                icon: '🎁',
-                title: '生日快乐',
-                content: '不管咋样那就生日快乐！很开心我在想在还能接受的顾虑的程度下、觉得有踩雷风险的情况下，还能感觉安全地去分享好多有点个人主观的事情。很开心还能和你（隔着屏幕）一起度过一个生日！希望新的一岁开心。',
-                date: '今天'
-            }
-        ];
+<script>
+const startBtn = document.getElementById('startBtn');
+const bgMusic = document.getElementById('bgMusic');
+const musicPlayer = document.getElementById('musicPlayer');
+const cake = document.getElementById('cake');
+const flame = document.getElementById('flame');
+const cakeScreen = document.getElementById('cakeScreen');
+const mainContent = document.getElementById('mainContent');
 
-        // Birthday cake interaction
-        let audio = null;
-        const cake = document.getElementById('cake');
-        const flame = document.getElementById('flame');
-        const cakeScreen = document.getElementById('cakeScreen');
-        const mainContent = document.getElementById('mainContent');
-        const bgMusic = document.getElementById('bgMusic');
-        const musicPlayer = document.getElementById('musicPlayer');
-        const startBtn = document.getElementById('startBtn');
+// Start button click
+startBtn.addEventListener('click', () => {
+    bgMusic.play().catch(e=>console.log(e));
+    musicPlayer.classList.add('show');
+    startBtn.style.display = 'none';
+});
 
-        // Set background music volume
-        bgMusic.volume = 0.4;
+// Cake click - blow candle and show main content
+cake.addEventListener('click', () => {
+    flame.classList.add('blown');
+    setTimeout(() => {
+        cakeScreen.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+    }, 1000);
+});
 
-        // Start button click - play music, hide button, show cake instruction
-        startBtn.addEventListener('click', () => {
-            bgMusic.play().catch(err => console.log('Audio play failed:', err));
-            startBtn.style.opacity = '0';
-            setTimeout(() => {
-                startBtn.style.display = 'none';
-            }, 300);
-            musicPlayer.classList.add('show');
-        });
+// Example memories (你可以替换/增加)
+const memories = [
+    {category:'school', icon:'🎒', title:'高中生活', content:'刚去高中…', date:'高一'},
+    {category:'music', icon:'🎵', title:'无条件', content:'一直听的歌曲…', date:'一直以来'},
+    {category:'thoughts', icon:'💭', title:'困惑', content:'内心独白…', date:'某天'},
+    {category:'journey', icon:'✈️', title:'云南之旅', content:'一起旅行…', date:'云南'}
+];
 
-        cake.addEventListener('click', () => {
-            // Play birthday song
-            if (!audio) {
-                audio = new Audio();
-                audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZQQ0PVKzn77BdGAw+ltrzwHQuBSl+zPLaizsIGGS57OihUBELTKXh8bllHAU2jdXzzn0vBSh7yfDdkEEKElyw6OyrWBUIQ5zd8sFuJAUuhM/z1YU0Bhxqvu7mnEoODlOq5vCxYBoMPJTX88p6LgUme8rx3I1ACRZitOfur10YCkCY3PLEcSYELIHO8diJOQgZZ7zs6KFOEgtIoeLxtWQcBTWM1fPPgTEGHGu/7eeaTQ4PWKvl8LJiGgw7k9by';
-            }
-            audio.play();
+// Generate cards
+function generateCards(filter='school'){
+    const container=document.getElementById('cardsContainer');
+    container.innerHTML='';
+    memories.filter(m=>m.category===filter).forEach(memory=>{
+        const card=document.createElement('div');
+        card.className='card';
+        card.dataset.category=memory.category;
+        card.onclick=function(){this.classList.toggle('flipped');};
+        card.innerHTML=`
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">${memory.icon}</div>
+                    <h3>${memory.title}</h3>
+                </div>
+                <div class="card-back">
+                    <h4>${memory.title}</h4>
+                    <p>${memory.content}</p>
+                    <p class="date">${memory.date}</p>
+                </div>
+            </div>`;
+        container.appendChild(card);
+    });
+}
 
-            // Blow out candle
-            flame.classList.add('blown');
-            
-            setTimeout(() => {
-                cakeScreen.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-            }, 2000);
-        });
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        generateCards(btn.dataset.filter);
+    });
+});
 
-        // Generate cards
-        function generateCards(filter = 'school') {
-            const container = document.getElementById('cardsContainer');
-            container.innerHTML = '';
-            
-            const filteredMemories = memories.filter(m => m.category === filter);
-            
-            filteredMemories.forEach((memory, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.dataset.category = memory.category;
-                card.onclick = function() { this.classList.toggle('flipped'); };
-                
-                card.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-icon">${memory.icon}</div>
-                            <h3>${memory.title}</h3>
-                        </div>
-                        <div class="card-back">
-                            <h4>${memory.title}</h4>
-                            <p>${memory.content}</p>
-                            <p class="date">${memory.date}</p>
-                        </div>
-                    </div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
+// Random card
+function revealRandomCard(){
+    const cards=document.querySelectorAll('.card');
+    const unflipped=Array.from(cards).filter(c=>!c.classList.contains('flipped'));
+    if(unflipped.length===0){
+        cards.forEach(c=>c.classList.remove('flipped'));
+        alert('所有回忆已揭开！🎉');
+        return;
+    }
+    const card=unflipped[Math.floor(Math.random()*unflipped.length)];
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>{card.classList.add('flipped');},600);
+}
 
-        // Filter functionality
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                generateCards(btn.dataset.filter);
-            });
-        });
-
-        // Random card reveal
-        function revealRandomCard() {
-            const cards = document.querySelectorAll('.card');
-            const unflippedCards = Array.from(cards).filter(card => !card.classList.contains('flipped'));
-            
-            if (unflippedCards.length === 0) {
-                cards.forEach(card => card.classList.remove('flipped'));
-                alert('所有回忆都已揭开！🎉 点击再次开始');
-                return;
-            }
-            
-            const randomCard = unflippedCards[Math.floor(Math.random() * unflippedCards.length)];
-            randomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            setTimeout(() => {
-                randomCard.classList.add('flipped');
-            }, 600);
-        }
-
-        // Initialize
-        generateCards();
-    </script>
+// Initialize
+generateCards();
+</script>
 </body>
 </html>
