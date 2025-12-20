@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -21,36 +22,7 @@
         }
         /* Background music player */
         .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 25px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-            font-size: 0.9em;
-            color: #667eea;
             display: none;
-        }
-        .music-player.show {
-            display: block;
-            animation: slideInRight 0.5s ease-out;
-        }
-        .music-info {
-            margin-bottom: 5px;
-            text-align: center;
-        }
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
         .cake-container {
             text-align: center;
@@ -333,9 +305,6 @@
     <!-- Birthday Cake Screen -->
     <div class="cake-container" id="cakeScreen">
         <h1>🎉 生日快乐!🎉</h1>
-        <p style="font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.95;">
-            又是一年!还是一份电子礼物,不过在几个月前就开始想,该送什么。想来想去,好像也没有什么真正合适的。后来忽然觉得,也许可以分享一些记忆。这个过程有点奇怪,那些记忆像是被慢慢藏了起来,可一旦去挖,又会涌出来很多。让我挑着分享一些吧。
-        </p>
         <div class="cake hidden-element" id="cake">
             <div class="cake-layer layer3"></div>
             <div class="cake-layer layer2"></div>
@@ -345,13 +314,16 @@
             </div>
         </div>
         <p class="instruction hidden-element" id="instruction">💨 请先许个愿,点击蛋糕把蜡烛吹灭(抽象的仪式感hhh)</p>
-        <button class="start-btn" id="startBtn">🎁 打开这封信</button>
+        <button class="start-btn" id="startBtn"> 点击进入📩 </button>
     </div>
 
     <!-- Main Content -->
     <div class="main-content hidden" id="mainContent">
         <div class="header">
             <h1>✨ 我们的回忆 ✨</h1>
+            <p style="font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.95;">
+                又是一年!还是一份电子礼物,不过在几个月前就开始想,该送什么。想来想去,好像也没有什么真正合适的。后来忽然觉得,也许可以分享一些记忆。这个过程有点奇怪,那些记忆像是被慢慢藏了起来,可一旦去挖,又会涌出来很多。让我挑着分享一些吧。
+            </p>
             <p style="margin-bottom: 20px;">选择一个关键词来探索回忆,或点击任意卡片</p>
             
             <div class="filter-container">
@@ -367,14 +339,10 @@
         <button class="random-btn" onclick="revealRandomCard()">🎲 随机翻开一张回忆</button>
     </div>
 
-    <!-- Background Music Player -->
-    <div class="music-player" id="musicPlayer">
-        <div class="music-info">🎵 Letter - S.H.E (Live)</div>
-        <audio id="bgMusic" controls loop>
-            <source src="https://m804.music.126.net/20251220055311/e9d15d4b147ac5bc68c493027c53c9d7/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/58726544713/9c29/dc3c/ecca/48159434624b3a8068d2e12bc937c800.m4a" type="audio/mp4">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
+    <!-- Background Music (hidden audio) -->
+    <audio id="bgMusic" loop>
+        <source src="music/Letter.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const memories = [
