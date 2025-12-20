@@ -563,4 +563,45 @@
                                 <h4>${memory.title}</h4>
                                 <p>${memory.content}</p>
                                 <p class="date">${memory.date}</p>
-                            </div
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            }
+
+            // Filter functionality
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    generateCards(btn.dataset.filter);
+                });
+            });
+
+            // Random card reveal
+            window.revealRandomCard = function() {
+                const cards = document.querySelectorAll('.card');
+                const unflippedCards = Array.from(cards).filter(card => !card.classList.contains('flipped'));
+                
+                if (unflippedCards.length === 0) {
+                    cards.forEach(card => card.classList.remove('flipped'));
+                    alert('所有回忆都已揭开！🎉 点击再次开始');
+                    return;
+                }
+                
+                const randomCard = unflippedCards[Math.floor(Math.random() * unflippedCards.length)];
+                randomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                setTimeout(() => {
+                    randomCard.classList.add('flipped');
+                }, 600);
+            };
+
+            // Initialize
+            generateCards();
+        });
+    </script>
+</body>
+</html>
