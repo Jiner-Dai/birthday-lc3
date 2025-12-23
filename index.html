@@ -738,8 +738,7 @@
                 
                 // 2秒后切换到回忆页面
                 setTimeout(() => {
-                    cake.classList.add('hidden-element');
-                    cakeScreen.classList.add('hidden');
+                    cakeScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
                 }, 2000);
             });
