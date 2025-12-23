@@ -692,6 +692,7 @@
             const musicPlayer = document.getElementById('musicPlayer');
             const startBtn = document.getElementById('startBtn');
             const instruction = document.getElementById('instruction');
+            const cakeTitle = document.getElementById('cakeTitle');
 
             // 设置背景音乐音量
             bgMusic.volume = 0.4;
@@ -705,6 +706,7 @@
                 bgMusic.play().catch(err => console.log('Background music failed:', err));
                 
                 // 显示蛋糕和说明文字
+                cakeTitle.classList.remove('hidden-element');
                 cake.classList.remove('hidden-element');
                 instruction.classList.remove('hidden-element');
                 
