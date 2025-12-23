@@ -20,6 +20,78 @@
             align-items: center;
             overflow-x: hidden;
         }
+                
+        /* Password Screen */
+        .password-screen {
+            text-align: center;
+            color: white;
+            animation: fadeIn 1s ease-in;
+            padding: 20px;
+        }
+        .password-screen h1 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .password-container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .password-container h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .password-container p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .password-input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
+        }
+        .password-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .password-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .error-message {
+            color: #f5576c;
+            margin-top: 15px;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .error-message.show {
+            opacity: 1;
+        }
         /* Background music player */
         .music-player {
             display: none;
@@ -302,6 +374,17 @@
     </style>
 </head>
 <body>
+    <!-- Password Screen -->
+    <div class="password-screen" id="passwordScreen">
+        <h1>🎁 小王的生日礼物 🎁</h1>
+        <div class="password-container">
+            <h2>请输入密码</h2>
+            <p>🔔见微信留言</p>
+            <input type="password" class="password-input" id="passwordInput" placeholder="输入密码" maxlength="6">
+            <button class="password-btn" onclick="checkPassword(lclcw2333)">进入</button>
+            <p class="error-message" id="errorMessage">密码错误，请重试</p>
+        </div>
+    </div>
     <!-- Birthday Cake Screen -->
     <div class="cake-container" id="cakeScreen">
         <h1>🎉 亲爱的小王：生日快乐!🎉</h1>
@@ -560,7 +643,7 @@
                 category: 'thoughts',
                 icon: '🎁',
                 title: '现在',
-                content: '当然是说生日快乐！！！很开心我可以这样觉得相对安全地去分享好多非常个人的回忆。真的很开心还能和你(隔着屏幕)一起度过一个生日，希望新的一岁开心多些。可能的话也多分享些，给别人机会分担些。我知道你不喜欢也怀疑那些绝对的话，比如“永远”、“最”、“无条件”………我大概也同意，但或许有时候需要些感性大于理性的时刻？它们的存在还是挺难得的。啊不管咋样，勉强听一下，因为最后还是想说，你是THE BEST，我一直在。谢谢这年还有你:)',
+                content: '当然是说生日快乐！很开心我可以这样觉得相对安全地去分享好多非常个人的回忆。真的很开心还能和你（隔着屏幕）一起度过一个生日。希望新的一岁开心多些，少些不想干还要做的事情。希望睡得好吃得香，身体倍儿好不酸不疼。可能的话也多分享些，给我机会分担。我知道你不喜欢也怀疑那些绝对的话，比如“永远”、“最”、“无条件”………我大概也同意，但或许有时候需要些感性大于理性的时刻？它们的存在还是挺难得的。啊不管咋样，勉强听一下，因为最后还是想说，你是THE BEST，我一直在。谢谢过去的20岁还有你:)',
                 date: '今天'
             },
             {
