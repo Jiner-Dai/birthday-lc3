@@ -704,8 +704,9 @@
                 bgMusic.play().catch(err => console.log('Background music failed:', err));
                 
                 // 显示蛋糕和说明文字
-                cakeTitle.classList.remove('hidden-element');
                 cake.classList.remove('hidden-element');
+                instruction.classList.remove('hidden-element');
+
                 
                 // 隐藏按钮
                 startBtn.style.opacity = '0';
