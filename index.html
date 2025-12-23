@@ -380,8 +380,8 @@
         <div class="password-container">
             <h2>请输入密码</h2>
             <p>🔔见微信留言</p>
-            <input type="password" class="password-input" id="passwordInput" placeholder="输入密码" maxlength="6">
-            <button class="password-btn" onclick="checkPassword(lclcw2333)">进入</button>
+            <input type="password" class="password-input" id="passwordInput" placeholder="输入密码" maxlength="9">
+            <button class="password-btn" onclick="checkPassword()">进入</button>
             <p class="error-message" id="errorMessage">密码错误，请重试</p>
         </div>
     </div>
@@ -428,6 +428,25 @@
     </audio>
 
     <script>
+    const CORRECT_PASSWORD = "lclcw2333";
+        function checkPassword() {
+        const input = document.getElementById("passwordInput").value;
+        const errorMessage = document.getElementById("errorMessage");
+        const passwordScreen = document.getElementById("passwordScreen");
+        const cakeScreen = document.getElementById("cakeScreen");
+
+        if (input === CORRECT_PASSWORD) {
+            // 密码正确
+            errorMessage.classList.remove("show");
+
+            // 切换页面
+            passwordScreen.style.display = "none";
+            cakeScreen.style.display = "block";
+        } else {
+            // 密码错误
+            errorMessage.classList.add("show");
+        }
+    
         const memories = [
             {
                 category: 'school',
