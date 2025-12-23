@@ -376,7 +376,7 @@
 <body>
     <!-- Password Screen -->
     <div class="password-screen" id="passwordScreen">
-        <h1>🎁 小王的生日礼物 🎁</h1>
+        <h1>🎁🎁🎁</h1>
         <div class="password-container">
             <h2>请输入密码</h2>
             <p>🔔见微信留言</p>
@@ -440,8 +440,8 @@
             errorMessage.classList.remove("show");
 
             // 切换页面
-            passwordScreen.style.display = "none";
-            cakeScreen.style.display = "block";
+            passwordScreen.classList.add("hidden");
+            cakeScreen.classList.remove("hidden");
         } else {
             // 密码错误
             errorMessage.classList.add("show");
